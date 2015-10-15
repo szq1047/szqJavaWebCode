@@ -1,0 +1,52 @@
+package com.qg.DAL;
+
+import com.qg.Common.DblHelper;
+
+import java.util.*;
+
+import com.qg.model.*;
+
+import java.sql.*;
+
+public class NotifyManageDal {
+	public boolean isAdminTop(String adminName){
+		String sql="select count(*) from tb_admin where admin_Name=? and admin_Top='1'";
+		String[] params={adminName};
+		return DblHelper.Exists(sql, params);
+	}
+	//获取List<Notfiy>列表
+	public List<Notify> getAllNotifyInfo(){
+		String sql="select * from tb_Notify";
+		List<Notify> list=null;
+		Notify notify=null;
+		String[] params={};
+		ResultSet rs1=DblHelper.executeQueryRS(sql, params);
+		
+		try {
+			list=new ArrayList<Notify>();
+			while(rs1.next()){
+				//System.out.println("hello=="+rs1.getString("ntfTitle"));
+				notify=new Notify();
+				notify.setNtfId(rs1.getInt(1));
+				notify.setNtfTitle(rs1.getString(2));
+				notify.setNtfContent(rs1.getString(3));
+				notify.setNtfPublisher(rs1.getString(4));
+				notify.setNtfPubDate(rs1.getString(5));
+				list.add(notify);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			DblHelper.closeAll();
+		}
+		return list;
+	}
+	//插入一条通知信息
+	public int AddNotifyInfo(Notify notify){
+		String sql="insert into tb_notify(ntf_Title,ntf_Content,ntf_Publisher,ntf_PubDate) values(?,?,?,?)";
+		String[] params={notify.getNtfTitle(),notify.getNtfContent(),notify.getNtfPublisher(),notify.getNtfPubDate()};
+		return DblHelper.ExcuteNonQuery(sql, params);
+	}
+}

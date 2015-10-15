@@ -1,0 +1,114 @@
+package com.qg.Common;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.qg.model.Message;
+
+public class LiuyanPageDivide {
+	private int sumRecord;//定义总记录数目
+	private int rowsPerPage = 6;//定义每页显示的记录数
+	private int totalPageNum;//定义总的页码	
+	
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+	private String sql = null;
+	
+	public LiuyanPageDivide(String sql) throws Exception{
+		new DblHelper();
+		conn = DblHelper.getConnection();
+		try{
+			this.setSql(sql);
+			pstmt = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs = pstmt.executeQuery();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		this.sumRecord = this.getSumRecord();
+		this.totalPageNum = this.getTotalPageNum();
+	}
+	
+	//获取总记录数
+	public int getSumRecord() {
+		try{
+			rs = pstmt.executeQuery();
+			rs.last();
+			sumRecord = rs.getRow();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		return sumRecord;
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List getData(int n){
+		List list = new ArrayList();
+		if(n<1)
+			n = 1;
+		if(n>totalPageNum)
+			n = totalPageNum;
+		int begin = (n-1)*rowsPerPage + 1;//获取第N页的第一条记录的位置
+		try{
+			rs = pstmt.executeQuery();
+			rs.absolute(begin);//将结果的游标定位到第N页的第一条记录
+			for(int i = 0;i<rowsPerPage&&(begin+i)<=sumRecord;i++){
+				int liuyan_id =  rs.getInt(1);
+				int user_id = rs.getInt(2);
+				String msg_name = rs.getString(3);
+				String msg_content = rs.getString(4); 
+				String date = rs.getString(5);
+				
+				//封装数据到list
+				Message liulan = new Message();
+				liulan.setMsgId(liuyan_id);;
+				liulan.setUserId(user_id);
+				liulan.setMsgName(msg_name);
+				liulan.setMsgContent(msg_content);
+				liulan.setMsgPubDate(date);
+				list.add(liulan);//把liulan对象封装在list中	
+				rs.next();
+			}
+			//关闭资源
+			if(rs!=null)
+				rs.close();
+			if(pstmt!=null)
+				pstmt.close();
+			if(conn!=null)
+				conn.close();
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}catch(SQLException ex){}
+		return list;
+	}
+	public int getRowsPerPage() {
+		//获取每页显示的记录数
+		return rowsPerPage;
+	}
+
+	public void setRowsPerPage(int rowsPerPage) {
+		//设置每页显示的记录数
+		this.rowsPerPage = rowsPerPage;
+	}
+	
+	//计算并返回总页数
+	public int getTotalPageNum() {
+		if(sumRecord%rowsPerPage == 0)
+			totalPageNum = sumRecord/rowsPerPage;
+		else
+			totalPageNum = sumRecord/rowsPerPage + 1;
+		return totalPageNum;
+	}
+
+	public String getSql() {
+		return sql;
+	}
+
+	public void setSql(String sql) {
+		this.sql = sql;
+	}
+}

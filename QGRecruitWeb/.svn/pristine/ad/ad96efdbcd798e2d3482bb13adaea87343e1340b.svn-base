@@ -1,0 +1,17 @@
+package com.qg.DAL;
+
+import com.qg.Common.DblHelper;
+
+public class AdminLoginDal {
+	public AdminLoginDal(){}
+	public boolean Exists(String name){
+		String sql="select count(*) from tb_admin where admin_Name=?";
+		String[] params={name};
+		return DblHelper.Exists(sql, params);
+	}
+	public boolean Exists(String name,String pwd){
+		String sql="select count(*) from tb_admin where admin_Name=? and admin_Pwd=?";
+		String[] params={name,pwd};
+		return DblHelper.Exists(sql, params);
+	}
+}

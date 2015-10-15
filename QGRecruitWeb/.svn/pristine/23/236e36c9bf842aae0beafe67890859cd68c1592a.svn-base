@@ -1,0 +1,15 @@
+package com.qg.BLL;
+
+import com.qg.DAL.AdminLoginDal;
+
+public class AdminLoginBll {
+	AdminLoginDal dal=new AdminLoginDal();
+	public AdminLoginBll(){}
+	public boolean Exists(String name){
+		System.out.println("admin_name="+name);
+		return dal.Exists(name);
+	}
+	public boolean Exists(String name,String pwd){
+		return dal.Exists(name, pwd);
+	}
+}

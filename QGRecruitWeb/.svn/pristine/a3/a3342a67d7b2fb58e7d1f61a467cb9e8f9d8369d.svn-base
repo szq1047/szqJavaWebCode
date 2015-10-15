@@ -1,0 +1,109 @@
+package com.qg.servlet;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.qg.BLL.*;
+
+/**
+ * Servlet implementation class LoginServlet
+ */
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public LoginServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
+		String userName = null;
+		String passWord = null;
+		String role = null;
+		String page="login.jsp";//调转的页面名称
+		//String message=null;//用于返回到jsp中登录提示的
+		UserLoginBll userbll = null;
+		AdminLoginBll adminbll=null;
+		try {
+			userName = request.getParameter("TxtUserName");
+			passWord = request.getParameter("TxtPassword");
+			role=request.getParameter("DropExpiration");
+			if (!userName.equals(null) && !(passWord.equals(null))) {
+				userbll = new UserLoginBll();
+				adminbll=new AdminLoginBll();
+				// 登录身份选择的是"管理员"的话
+				if (role.equals("admin")) {
+					if(adminbll.Exists(userName)){
+						if(adminbll.Exists(userName, passWord)){
+							//管理员登录成功
+							page="houtai.jsp";
+							System.out.println("登录成功！");
+							request.getSession().setAttribute("adminName", userName);
+							request.getSession().setAttribute("adminPwd",passWord );
+							
+						}else{
+							System.out.println("密码错误！");
+							request.setAttribute("message", "密码错误");
+						}
+					}else{
+						System.out.println("管理员账号不存在！");
+						request.setAttribute("message", "管理员账号不存在");
+					}
+				} else if (role.equals("user")) {// 否则是用户登录身份的话
+					if (userbll.Exists(userName)) {
+						if (userbll.Exists(userName, passWord)) {
+							//用户登录成功
+							System.out.println("登录成功！");
+							request.getSession().setAttribute("userName", userName);
+							request.getSession().setAttribute("userPwd",passWord );
+							page="hello.jsp";
+							
+						} else {
+							System.out.println("密码错误！");
+							request.setAttribute("message", "密码错误");
+							
+						}
+					} else {
+						System.out.println("用户名不存在,请先登录！");
+						request.setAttribute("message", "用户名不存在,请先注册！");
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}finally{
+			RequestDispatcher rd=request.getRequestDispatcher(page);
+			rd.forward(request, response);
+		}
+
+	}
+
+}

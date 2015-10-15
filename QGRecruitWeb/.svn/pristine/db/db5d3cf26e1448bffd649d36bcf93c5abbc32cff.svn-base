@@ -1,0 +1,23 @@
+package com.qg.BLL;
+
+import com.qg.DAL.UserLoginDal;
+import com.qg.model.*;
+
+public class UserLoginBll {
+	private UserLoginDal dal=new UserLoginDal();
+	public UserLoginBll(){}
+	public boolean Exists(String name){
+		return dal.Exists(name);
+	}
+	public boolean Exists(String name,String pwd){
+		return dal.Exists(name,pwd);
+	}
+	public boolean Add(User model){
+		int result=dal.Add(model);
+		if(result!=0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+}

@@ -1,0 +1,18 @@
+package com.qg.BLL;
+
+import com.qg.DAL.NotifyManageDal;
+import java.util.*;
+import com.qg.model.*;
+
+public class NotifyManageBll {
+	NotifyManageDal dal=new NotifyManageDal();
+	public boolean isAdminTop(String adminName){
+		return dal.isAdminTop(adminName);
+	}
+	public List<Notify> getAllNotifyInfo(){
+		return dal.getAllNotifyInfo();
+	}
+	public int AddNotifyInfo(Notify notify){
+		return dal.AddNotifyInfo(notify);
+	}
+}

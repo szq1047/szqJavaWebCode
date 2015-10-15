@@ -1,0 +1,27 @@
+package com.qg.DAL;
+
+import com.qg.Common.DblHelper;
+import com.qg.model.*;
+
+public class UserLoginDal {
+	public UserLoginDal() {
+	}
+
+	public boolean Exists(String name) {
+		String sql = "select count(*) from tb_user where reg_Name=?";
+		String[] params = { name };
+		return DblHelper.Exists(sql, params);
+	}
+
+	public boolean Exists(String name, String pwd) {
+		String sql = "select count(*) from tb_user where reg_Name=? and reg_Pwd=?";
+		String[] params = { name, pwd };
+		return DblHelper.Exists(sql, params);
+	}
+
+	public int Add(User model){
+		String sql="insert into tb_user(stu_ID,reg_Name,real_Name,reg_Pwd,reg_Gender,reg_BomDate,tel_Number,qq,e_Mail,major,college,class,bmPass,testPass,isJoin) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String[] params={model.getStuId(),model.getRegName(),model.getRealName(),model.getRegPwd(),model.getRegGender(),model.getRegBomDate(),model.getTelNumber(),model.getQq(),model.geteMail(),model.getMajor(),model.getCollege(),model.getClassName(),"0","0","0"};
+		return DblHelper.ExcuteNonQuery(sql, params);
+	}
+}
