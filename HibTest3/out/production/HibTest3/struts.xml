@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <!--定义一个名称为user的包，继承struts2的默认包，指定命名空间为“/user”-->
+    <package name="user" namespace="/user" extends="struts-default">
+        <!--为UserAction类的login方法配置映射-->
+        <action name="doLogin" class="com.hibtest3.action.UserAction" method="login">
+            <result type="redirect" name="index">/index.jsp</result>
+            <result type="redirect" name="error">/error.jsp</result>
+        </action>
+    </package>
+    <package name="room" namespace="/room" extends="struts-default">
+        <!--为UserAction类的login方法配置映射-->
+        <action name="getListRoom" class="com.hibtest3.action.RoomAction" method="getRoomInfo">
+            <result name="roomManager">/roomManage.jsp</result>
+            <result type="redirect" name="error">/error.jsp</result>
+            <param name="rows">4</param>
+        </action>
+        <action name="addRoomInfo" class="com.hibtest3.action.RoomAction" method="addRoomInfo">
+            <result name="query_roomInfo" type="redirectAction">getListRoom</result>
+        </action>
+        <!--如果删除成功的话，跳转到查询所有房间信息的Action-->
+        <action name="deleteRoomInfo" class="com.hibtest3.action.RoomAction" method="deleteRoom">
+            <result name="delete_success" type="redirectAction">getListRoom</result>
+        </action>
+        <action name="getRoomInfoByRno" class="com.hibtest3.action.RoomAction" method="getRoomByRno">
+            <result name="query_roomInfoByRno">/UpdateRoomInfo.jsp</result>
+        </action>
+
+        <action name="updateRoomInfo" class="com.hibtest3.action.RoomAction" method="updateRoomInfo">
+            <result name="updateRoom" type="redirectAction">getListRoom</result>
+        </action>
+    </package>
+    <package name="myjson" namespace="/myjson"  extends="json-default">
+        <action name="SZQJson" class="com.hibtest3.action.MyJson" method="getRoomByRnoByJson">
+            <result type="json"/>
+        </action>
+    </package>
+
+    <package name="customer" namespace="/customer" extends="struts-default">
+        <!--为UserAction类的login方法配置映射-->
+        <action name="getListCustomer" class="com.hibtest3.action.CustomerAction" method="getCustomerInfo">
+            <result name="getAllCustomer">/viewCustomer.jsp</result>
+            <result type="redirect" name="error">/error.jsp</result>
+        </action>
+        <action name="addCustomer" class="com.hibtest3.action.CustomerAction" method="addCustomerInfo">
+            <result name="query_CustomerInfo" type="redirectAction">getListCustomer</result>
+        </action>
+        <action name="getCustomerByCno" class="com.hibtest3.action.CustomerAction" method="getCustomerByCno">
+            <result name="query_CustomerByCno">/customerEntry.jsp</result>
+        </action>
+    </package>
+
+    <package name="living" namespace="/living" extends="struts-default">
+        <action name="getListCustomerLiving" class="com.hibtest3.action.CustomerLivingAction" method="getCustomerLivingInfo">
+            <result name="getAllCustomerLiving">/viewCustomerEntryInfo.jsp</result>
+        </action>
+        <action name="addCustomerLiving" class="com.hibtest3.action.CustomerLivingAction" method="addCustomerLiving">
+            <result name="query_CustomerLivingInfo" type="redirectAction">getListCustomerLiving</result>
+        </action>
+        <action name="getCustomerLivingByWhere" class="com.hibtest3.action.CustomerLivingAction" method="getCustomerLivingByCno">
+            <result name="query_CusLivingByCno">/checkOutRoom.jsp</result>
+        </action>
+        <action name="checkRoom" class="com.hibtest3.action.CustomerLivingAction" method="CheckOutRoom">
+            <result name="query_checkRoom" type="redirectAction">getListCustomerLiving</result>
+        </action>
+    </package>
+</struts>

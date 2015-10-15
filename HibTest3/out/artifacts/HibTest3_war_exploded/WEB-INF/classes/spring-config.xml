@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+       <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+              <property name="configLocation" value="classpath:hibernate.cfg.xml">
+              </property>
+       </bean>
+
+       <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+              <property name="sessionFactory" ref="sessionFactory"/>
+       </bean>
+       <bean id="myHibTxManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+              <property name="sessionFactory" ref="sessionFactory"/>
+       </bean>
+       <!--定义UserDAOImpl-->
+       <bean id="userDAO" class="com.hibtest3.dao.UserDAOImpl">
+              <constructor-arg>
+                     <ref bean="hibernateTemplate"/>
+              </constructor-arg>
+       </bean>
+       <bean id="roomDAO" class="com.hibtest3.dao.RoomDAOImpl">
+              <constructor-arg>
+                     <ref bean="hibernateTemplate"/>
+              </constructor-arg>
+       </bean>
+       <bean id="customerDAO" class="com.hibtest3.dao.CustomerDAOImpl">
+              <constructor-arg>
+                     <ref bean="hibernateTemplate"/>
+              </constructor-arg>
+       </bean>
+       <bean id="customerLivingDAO" class="com.hibtest3.dao.CustomerLivingDAOImpl">
+              <constructor-arg>
+                     <ref bean="hibernateTemplate"/>
+              </constructor-arg>
+       </bean>
+
+       <!--定义UserBizImpl类，并为其属性userDAO注入值-->
+       <bean id="userBiz" class="com.hibtest3.biz.UserBizImpl">
+              <constructor-arg>
+                     <ref bean="userDAO"/>
+              </constructor-arg>
+       </bean>
+       <bean id="roomBiz" class="com.hibtest3.biz.RoomBizImpl">
+              <constructor-arg>
+                     <ref bean="roomDAO"/>
+              </constructor-arg>
+       </bean>
+       <bean id="customerBiz" class="com.hibtest3.biz.CustomerBizImpl">
+              <constructor-arg>
+                     <ref bean="customerDAO"/>
+              </constructor-arg>
+       </bean>
+       <bean id="customerLivingBiz" class="com.hibtest3.biz.CustomerLivingBizImpl">
+              <constructor-arg>
+                     <ref bean="customerLivingDAO"/>
+              </constructor-arg>
+       </bean>
+
+       <!--配置事务管理器的作用是指定其作用的sessionFactory把事务交给Spring去处理-->
+       <bean id="transactionManager"
+             class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+              <property name="sessionFactory">
+                     <ref bean="sessionFactory" />
+              </property>
+       </bean>
+       <bean id="transactionInterceptor"
+             class="org.springframework.transaction.interceptor.TransactionInterceptor">
+              <property name="transactionManager">
+                     <ref bean="transactionManager" />
+              </property>
+              <property name="transactionAttributes">
+                     <props>
+                            <prop key="get*">PROPAGATION_REQUIRED, readOnly</prop>
+                            <prop key="getDirInfo">PROPAGATION_REQUIRED</prop>
+                            <prop key="*">PROPAGATION_REQUIRED</prop>
+                     </props>
+              </property>
+       </bean>
+       <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+              <property name="beanNames">
+                     <list>
+                            <value>userDAO</value>
+                            <value>roomDAO</value>
+                            <value>customerDAO</value>
+                            <value>customerLivingDAO</value>
+                     </list>
+              </property>
+              <property name="interceptorNames">
+                     <list>
+                            <value>transactionInterceptor</value>
+                     </list>
+              </property>
+       </bean>
+
+       <bean id="serviceManager" class="com.hibtest3.biz.ServiceManager">
+              <property name="userBiz">
+                     <ref bean="userBiz" />
+              </property>
+              <property name="roomBiz">
+                     <ref bean="roomBiz" />
+              </property>
+              <property name="customerBiz">
+                     <ref bean="customerBiz" />
+              </property>
+              <property name="customerLivingBiz">
+                     <ref bean="customerLivingBiz"/>
+              </property>
+
+       </bean>
+</beans>

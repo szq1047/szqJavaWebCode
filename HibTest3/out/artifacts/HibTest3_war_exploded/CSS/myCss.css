@@ -1,0 +1,48 @@
+body{
+ background:url(../images/bg.jpg) repeat-y center;
+
+}
+*{margin:0;padding:0;}
+.main
+{
+  position:relative;
+  width:900px;
+  height:500px;
+  margin-right:auto;
+  margin-left:auto;
+  border-style:solid;
+  border-color: gray;
+  border-width: 1px;
+ 
+}
+.top{
+  position:relative;
+  width:900px;
+  margin-top:20px;
+  margin-right:auto;
+  margin-left:auto;
+  height:110px; 
+}
+
+.left{
+	width:225px;
+	float:left;
+	margin-top:20px;
+	border:#CCC solid 1px;
+	}
+	
+.right{
+	wdith: 660px;
+	margin-top:20px;  
+	
+	float:left;
+	border:#CCC solid 1px;
+	}
+	
+.end{
+	width:900px;
+	height:40px;
+	margin-top:650px;
+	text-align:center;
+	border:#CCC solid 1px;
+	}

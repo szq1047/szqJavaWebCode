@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class  name="com.hibtest3.entity.CustomerLivingInfo" table="customerlivinginfo" lazy="false">
+        <composite-id><!--将房间编号和客户编号作为复合主键，而这两个键分别又是多对一的关系-->
+            <key-many-to-one name="roomInfo" column="Rno" class="com.hibtest3.entity.RoomInfo" access="field" foreign-key="Rno"/>
+            <key-many-to-one name="customerInfo" column="Cno" class="com.hibtest3.entity.CustomerInfo" access="field" foreign-key="Cno"/>
+        </composite-id>
+
+        <property name="TenrollDate" type="java.util.Date">
+            <column name="TenrollDate"/>
+        </property>
+        <property name="TleftDate" type="java.util.Date">
+            <column name="TleftDate"/>
+        </property>
+        <property name="Tmoney" type="big_decimal">
+            <column name="Tmoney"/>
+        </property>
+        <property name="Tdeposit" type="big_decimal">
+            <column name="Tdeposit"/>
+        </property>
+    </class>
+</hibernate-mapping>

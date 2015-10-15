@@ -1,0 +1,24 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="HibTest3:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/HibTest3_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="HibTest3" />
+          <element id="dir-copy" path="F:/迅雷下载/spring-web-3.2.13.RELEASE" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Hibernate 3.6.10-3.6.10" />
+          <element id="library" level="project" name="Struts 2-2.3.20.1" />
+          <element id="library" level="project" name="Spring-4.1.6.RELEASE" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../J2EEsoft/mysql-connector-java/mysql-connector-java-5.1.26/mysql-connector-java-5.1.26-bin.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../J2EEsoft/SSH使用json需要用到的包/struts2-spring-plugin-2.1.8.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../J2EEsoft/jstl/jstl.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../J2EEsoft/jstl/standard.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../J2EEsoft/struts-2.3.20.1-lib/struts-2.3.20.1/lib/struts2-json-plugin-2.3.20.1.jar" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="HibTest3/web/Web" />
+    </root>
+  </artifact>
+</component>

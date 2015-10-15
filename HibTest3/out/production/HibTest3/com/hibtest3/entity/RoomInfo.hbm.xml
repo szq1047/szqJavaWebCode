@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class  name="com.hibtest3.entity.RoomInfo" table="roominfo" lazy="false">
+        <id name="Rno" type="java.lang.String">
+            <column name="Rno"/>
+            <generator class="assigned"></generator>
+        </id>
+        <property name="Rstyle" type="java.lang.String">
+            <column name="Rstyle"/>
+        </property>
+        <property name="Rprice" type="int">
+            <column name="Rprice"/>
+        </property>
+        <property name="Rstate" type="java.lang.String">
+            <column name="Rstate"/>
+        </property>
+        <property name="Rtel" type="java.lang.String">
+            <column name="Rtel"/>
+        </property>
+    </class>
+</hibernate-mapping>

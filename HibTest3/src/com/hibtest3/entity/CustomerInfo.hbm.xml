@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class  name="com.hibtest3.entity.CustomerInfo" table="customerinfo" lazy="false">
+        <id name="Cno" type="java.lang.String">
+            <column name="Cno" length="10"/>
+            <generator class="assigned"></generator>
+        </id>
+        <property name="Cname" type="java.lang.String">
+            <column name="Cname" length="10"/>
+        </property>
+        <property name="Csex" type="java.lang.String">
+            <column name="Csex"/>
+        </property>
+        <property name="Cid" type="java.lang.String">
+            <column name="Cid" length="20"/>
+        </property>
+    </class>
+</hibernate-mapping>
